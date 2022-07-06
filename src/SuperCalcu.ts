@@ -19,12 +19,12 @@ class SuperCalcu {
         var queryArray = rawExpresion.split('')
         var expresionTree = new BinaryTree()
         expresionTree.head = SuperCalcu.processExpresion(queryArray)
-        console.log(expresionTree.head)
         if(expresionTree.getHead() instanceof TreeNode){
             let resultado = SuperCalcu.resolve(expresionTree.head)
-            console.log(resultado)
-            console.log(resultado.print())
+            return resultado
         }
+
+        return null
     
     }
     
@@ -42,17 +42,17 @@ class SuperCalcu {
                 b = SuperCalcu.resolve(BinaryTree.right)
             
     
-                let operator = BinaryTree.value
+                let operator = BinaryTree.value as Operators
                 
-                if(operator == Operators.DIV)
+                if(operator === Operators.DIV)
                     return MathCalculator.div(a,b)
-                if(operator == '*')
+                if(operator === Operators.MULTP)
                     return MathCalculator.multp(a, b)
-                if(operator == '+')
+                if(operator === Operators.SUM)
                     return MathCalculator.sum(a, b)
-                if(operator == '-')
+                if(operator === Operators.SUBS)
                     return MathCalculator.subs(a,b)
-                if(operator == '^' && b instanceof Polinomio)
+                if(operator === Operators.POW && b instanceof Polinomio)
                     return MathCalculator.pow(a, b)
                 
             }
@@ -219,7 +219,7 @@ class SuperCalcu {
 
 }
 
-console.log("XD")
+console.log("lib4math v2 %cLoaded Correctly!", "color: #24E211;")
 
 export default SuperCalcu
 export {SuperCalcu as SuperCalcu}
