@@ -29,6 +29,10 @@ class Fraction extends MathStructure{
         this.numerator.toggleSign()
     }
 
+    toFraction(): Fraction {
+        return this
+    }
+
     static multp(frac1:Fraction, frac2:Fraction): Fraction{
 
         let numerator = Polinomio.multp(frac1.numerator, frac2.numerator)

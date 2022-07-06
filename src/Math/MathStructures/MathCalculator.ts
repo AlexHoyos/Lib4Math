@@ -1,30 +1,8 @@
-import Fraction from "./ComplexStructures/Fraction";
+import Fraction from "./ComplexStructures/Fraction"
+import Polinomio from "./ComplexStructures/Polinomio"
+import MathStructure from "./MathStructure"
 
-abstract class MathStructure{
-
-    abstract print():string
-    abstract simplify():void
-    abstract compare(a:MathStructure):boolean
-    abstract clone():MathStructure
-    abstract toggleSign(): void
-    abstract toFraction(): Fraction
-
-}
-
-
-export default MathStructure
-
-/*
-    toFraction():Fraction {
-        if(this instanceof Polinomio){
-            return new Fraction(this, new Polinomio([ new Monomio(1) ]))
-        } else if(this instanceof Fraction){
-            return this
-        } else {
-            return new Fraction(new Polinomio([ new Monomio(0) ]), new Polinomio([ new Monomio(1) ]))
-        }
-
-    }
+class MathCalculator {
 
     static multp(struct1:MathStructure, struct2:MathStructure):MathStructure {
 
@@ -70,7 +48,7 @@ export default MathStructure
         }
 
         struct2.toggleSign()
-        return MathStructure.sum(struct1, struct2)
+        return MathCalculator.sum(struct1, struct2)
 
     }
     static pow(struct1:MathStructure, struct2:Polinomio):MathStructure {
@@ -82,4 +60,6 @@ export default MathStructure
         return new Polinomio()
     }
 
-}*/
+}
+
+export default MathCalculator

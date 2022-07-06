@@ -3,7 +3,6 @@ import MathStructure from "../MathStructure";
 import Monomio from "../PrimitiveStructures/Monomio";
 
 class Polinomio extends MathStructure{
-
     monomios: Monomio[]
     exp: number
 
@@ -110,6 +109,10 @@ class Polinomio extends MathStructure{
 
         }
 
+    }
+
+    toFraction(): Fraction {
+        return new Fraction(this, new Polinomio([ new Monomio(1) ]))
     }
 
     toggleMonoSigns(){

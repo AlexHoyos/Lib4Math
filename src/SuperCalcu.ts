@@ -1,6 +1,7 @@
 import BinaryTree from "./BinaryTree/BinaryTree"
 import TreeNode from "./BinaryTree/TreeNode"
 import Polinomio from "./Math/MathStructures/ComplexStructures/Polinomio"
+import MathCalculator from "./Math/MathStructures/MathCalculator"
 import MathStructure from "./Math/MathStructures/MathStructure"
 import Literal from "./Math/MathStructures/PrimitiveStructures/Literal/Literal"
 import Variable from "./Math/MathStructures/PrimitiveStructures/Literal/Variable"
@@ -42,18 +43,18 @@ class SuperCalcu {
             
     
                 let operator = BinaryTree.value
-                /*
+                
                 if(operator == Operators.DIV)
-                    return MathStructure.div(a,b)
+                    return MathCalculator.div(a,b)
                 if(operator == '*')
-                    return MathStructure.multp(a, b)
+                    return MathCalculator.multp(a, b)
                 if(operator == '+')
-                    return MathStructure.sum(a, b)
+                    return MathCalculator.sum(a, b)
                 if(operator == '-')
-                    return MathStructure.subs(a,b)
+                    return MathCalculator.subs(a,b)
                 if(operator == '^' && b instanceof Polinomio)
-                    return MathStructure.pow(a, b)
-                */
+                    return MathCalculator.pow(a, b)
+                
             }
     
         }

@@ -1,3 +1,4 @@
+import Fraction from "../ComplexStructures/Fraction";
 import Polinomio from "../ComplexStructures/Polinomio";
 import MathStructure from "../MathStructure";
 import Literal from "./Literal/Literal";
@@ -73,6 +74,10 @@ class Monomio extends MathStructure{
 
     toggleVariableExpSigns(){
         this.literal.toggleVariableExpSigns()
+    }
+
+    toFraction(): Fraction {
+        return new Fraction(new Polinomio([this]), new Polinomio([new Monomio(1)]))
     }
 
     static sum(mono1:Monomio, mono2:Monomio){
