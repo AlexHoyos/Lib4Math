@@ -1,7 +1,8 @@
 import BinaryTree from "./BinaryTree/BinaryTree"
 import TreeNode from "./BinaryTree/TreeNode"
-import MathResult from "./Math/MathResult/MathResult"
-import ResultStep from "./Math/MathResult/ResultStep"
+import MathQuery from "./Math/MathIO/MathInput/MathQuery"
+import MathResult from "./Math/MathIO/MathOutput/MathResult"
+import ResultStep from "./Math/MathIO/MathOutput/ResultStep"
 import Polinomio from "./Math/MathStructures/ComplexStructures/Polinomio"
 import MathCalculator from "./Math/MathStructures/MathCalculator"
 import MathStructure from "./Math/MathStructures/MathStructure"
@@ -220,6 +221,12 @@ class Lib4math {
            
         }
         return closeIndex
+    }
+
+    static processQuery(query:string){
+        var mathQuery = new MathQuery(query)
+        console.log(mathQuery)
+        console.log(mathQuery.rawQuery)
     }
 
 }

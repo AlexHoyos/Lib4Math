@@ -1,4 +1,4 @@
-import MathStructure from '../MathStructures/MathStructure'
+import MathStructure from '../../MathStructures/MathStructure'
 import ResultStep from './ResultStep'
 class MathResult {
 

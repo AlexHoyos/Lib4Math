@@ -1,7 +1,7 @@
 import Fraction from "./Fraction";
 import MathStructure from "../MathStructure";
 import Monomio from "../PrimitiveStructures/Monomio";
-import ResultStep from "../../MathResult/ResultStep";
+import ResultStep from "../../MathIO/MathOutput/ResultStep";
 
 class Polinomio extends MathStructure{
     monomios: Monomio[]
