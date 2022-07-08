@@ -1,4 +1,4 @@
-import Operators from "../Math/Operators"
+import Operators from "../Math/MathStructures/Operators"
 import MathStructure from "../Math/MathStructures/MathStructure"
 
 class TreeNode {

@@ -1,9 +1,9 @@
 import TreeNode from "../../../BinaryTree/TreeNode"
 import Polinomio from "../../MathStructures/ComplexStructures/Polinomio"
-import MathCalculator from "../../MathStructures/MathCalculator"
+import MathCalculator from "../../Utils/MathCalculator"
 import MathStructure from "../../MathStructures/MathStructure"
 import Monomio from "../../MathStructures/PrimitiveStructures/Monomio"
-import Operators from "../../Operators"
+import Operators from "../../MathStructures/Operators"
 import QueryUtils from "../../Utils/Utils"
 import ResultStep from "../MathOutput/ResultStep"
 

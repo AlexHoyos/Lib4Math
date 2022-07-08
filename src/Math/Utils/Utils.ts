@@ -1,4 +1,4 @@
-import Operators from "../Operators";
+import Operators from "../MathStructures/Operators";
 
 const QueryUtils = {
 

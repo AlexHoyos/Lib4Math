@@ -1,7 +1,7 @@
 import ResultStep from "../MathIO/MathOutput/ResultStep"
-import Fraction from "./ComplexStructures/Fraction"
-import Polinomio from "./ComplexStructures/Polinomio"
-import MathStructure from "./MathStructure"
+import Fraction from "../MathStructures/ComplexStructures/Fraction"
+import Polinomio from "../MathStructures/ComplexStructures/Polinomio"
+import MathStructure from "../MathStructures/MathStructure"
 
 class MathCalculator {
     

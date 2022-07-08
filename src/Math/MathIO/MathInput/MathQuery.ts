@@ -1,6 +1,6 @@
 import BinaryTree from "../../../BinaryTree/BinaryTree"
 import TreeNode from "../../../BinaryTree/TreeNode"
-import Operators from "../../Operators"
+import Operators from "../../MathStructures/Operators"
 import QueryUtils from "../../Utils/Utils"
 import MathResult from "../MathOutput/MathResult"
 import ResultStep from "../MathOutput/ResultStep"
