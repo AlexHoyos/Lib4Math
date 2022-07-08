@@ -1,6 +1,7 @@
 import Fraction from "./Fraction";
 import MathStructure from "../MathStructure";
 import Monomio from "../PrimitiveStructures/Monomio";
+import ResultStep from "../../MathResult/ResultStep";
 
 class Polinomio extends MathStructure{
     monomios: Monomio[]
@@ -133,7 +134,7 @@ class Polinomio extends MathStructure{
         return poliCloned
     }
 
-    static sum(poli1:Polinomio, poli2:Polinomio): Polinomio{
+    static sum(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
 
         var suma = poli1.clone()
 
@@ -146,7 +147,7 @@ class Polinomio extends MathStructure{
 
     }
 
-    static subs(poli1:Polinomio, poli2:Polinomio): Polinomio{
+    static subs(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
 
         poli2.toggleMonoSigns()
 
@@ -154,7 +155,7 @@ class Polinomio extends MathStructure{
         return resta
     }
 
-    static multp(poli1:Polinomio, poli2:Polinomio): Polinomio{
+    static multp(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
 
         var result = new Polinomio()
 
@@ -172,7 +173,7 @@ class Polinomio extends MathStructure{
         return result
     }
 
-    static div(poli1:Polinomio, poli2:Polinomio): Polinomio | Fraction{
+    static div(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio | Fraction{
 
         if(poli1.monomios.length == 1 && poli2.monomios.length == 1){
             var result = new Polinomio()
@@ -195,7 +196,7 @@ class Polinomio extends MathStructure{
 
     }
 
-    static pow(poli1:Polinomio, poli2:Polinomio): Polinomio{
+    static pow(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
 
         var Exp = poli2.monomios[0].coeficiente
 

@@ -1,5 +1,7 @@
 import BinaryTree from "./BinaryTree/BinaryTree"
 import TreeNode from "./BinaryTree/TreeNode"
+import MathResult from "./Math/MathResult/MathResult"
+import ResultStep from "./Math/MathResult/ResultStep"
 import Polinomio from "./Math/MathStructures/ComplexStructures/Polinomio"
 import MathCalculator from "./Math/MathStructures/MathCalculator"
 import MathStructure from "./Math/MathStructures/MathStructure"
@@ -19,17 +21,20 @@ class Lib4math {
         var queryArray = rawExpresion.split('')
         var expresionTree = new BinaryTree()
         expresionTree.head = Lib4math.processExpresion(queryArray)
+
+        // Creating StepByStep array
+        var stepByStep:ResultStep[] = []
+
         if(expresionTree.getHead() instanceof TreeNode){
-            let resultado = Lib4math.resolve(expresionTree.head)
-            return resultado
+            let resultado = Lib4math.resolve(expresionTree.head, stepByStep)
+            return new MathResult(rawExpresion, resultado, stepByStep)
         }
 
         return null
     
     }
     
-    static resolve(BinaryTree: TreeNode): MathStructure{
-    
+    static resolve(BinaryTree: TreeNode, stepbystep:ResultStep[] = []): MathStructure{
         if (BinaryTree.value instanceof MathStructure){
             return BinaryTree.value
         } else {
@@ -38,22 +43,22 @@ class Lib4math {
             var b: MathStructure
     
             if(BinaryTree.left instanceof TreeNode && BinaryTree.right instanceof TreeNode){
-                a = Lib4math.resolve(BinaryTree.left)
-                b = Lib4math.resolve(BinaryTree.right)
+                a = Lib4math.resolve(BinaryTree.left, stepbystep)
+                b = Lib4math.resolve(BinaryTree.right, stepbystep)
             
     
                 let operator = BinaryTree.value as Operators
                 
                 if(operator === Operators.DIV)
-                    return MathCalculator.div(a,b)
+                    return MathCalculator.div(a,b, stepbystep)
                 if(operator === Operators.MULTP)
-                    return MathCalculator.multp(a, b)
+                    return MathCalculator.multp(a, b, stepbystep)
                 if(operator === Operators.SUM)
-                    return MathCalculator.sum(a, b)
+                    return MathCalculator.sum(a, b, stepbystep)
                 if(operator === Operators.SUBS)
-                    return MathCalculator.subs(a,b)
+                    return MathCalculator.subs(a,b, stepbystep)
                 if(operator === Operators.POW && b instanceof Polinomio)
-                    return MathCalculator.pow(a, b)
+                    return MathCalculator.pow(a, b, stepbystep)
                 
             }
     

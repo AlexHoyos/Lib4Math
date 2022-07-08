@@ -1,3 +1,4 @@
+import ResultStep from "../../MathResult/ResultStep";
 import MathStructure from "../MathStructure";
 import Polinomio from "./Polinomio";
 
@@ -33,18 +34,39 @@ class Fraction extends MathStructure{
         return this
     }
 
-    static multp(frac1:Fraction, frac2:Fraction): Fraction{
+    static multp(frac1:Fraction, frac2:Fraction, stepbystep:ResultStep[]=[]): Fraction{
 
-        let numerator = Polinomio.multp(frac1.numerator, frac2.numerator)
-        let denominator = Polinomio.multp(frac1.denominator, frac2.denominator)
+        stepbystep.push(new ResultStep(
+            "\\text{Multiplicamos }"+frac1.print()+"*"+frac2.print()
+        ))
+
+        stepbystep.push(new ResultStep(
+            "\\text{Obtenemos el numerador: }"+frac1.numerator.print()+"*"+frac2.numerator.print()
+        ))
+
+        var numerator = Polinomio.multp(frac1.numerator, frac2.numerator)
+
+        stepbystep.push(new ResultStep(
+            "\\text{Obtenemos el denominador: }"+frac1.denominator.print()+"*"+frac2.denominator.print()
+        ))
+
+        var denominator = Polinomio.multp(frac1.denominator, frac2.denominator)
         
+        stepbystep.push(new ResultStep(
+            "\\text{Numerador: }"+numerator.print()+"\\text{ Denominador: }"+denominator.print()
+        ))
+
         var fractionResult = new Fraction(numerator, denominator)
+
+        stepbystep.push(new ResultStep(
+            "\\text{Entonces: }"+frac1.print()+"*"+frac2.print()+"="+fractionResult.print()
+        ))
 
         return fractionResult
 
     }
 
-    static div(frac1:Fraction, frac2:Fraction): Fraction{
+    static div(frac1:Fraction, frac2:Fraction, stepbystep:ResultStep[]=[]): Fraction{
 
         let numerator = Polinomio.multp( frac1.numerator, frac2.denominator )
         let denominator = Polinomio.multp(frac1.denominator, frac2.numerator)
@@ -55,7 +77,7 @@ class Fraction extends MathStructure{
 
     }
 
-    static sum(frac1:Fraction, frac2:Fraction): Fraction{
+    static sum(frac1:Fraction, frac2:Fraction, stepbystep:ResultStep[]=[]): Fraction{
 
         /*
             frac1    frac2
