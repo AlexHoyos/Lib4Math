@@ -1,3 +1,5 @@
+import Operators from "../Operators";
+
 const QueryUtils = {
 
     getIndexOfCloseParentesis: function(queryArray:string[], index:number):number{
@@ -48,6 +50,21 @@ const QueryUtils = {
 
         return false
 
+    },
+
+    isNumeric: function(n:string):boolean {
+        return !isNaN(parseFloat(n));
+    },
+
+    isOperator: function(o:Operators):boolean {
+        return Object.values(Operators).includes(o)
+    },
+
+    isNextToChar: function(queryArray:string[], index:number):boolean{
+        if(index == 0 || index >= queryArray.length )
+            return false
+        else
+            return this.isNumeric(queryArray[index-1]) == false
     }
 
 }

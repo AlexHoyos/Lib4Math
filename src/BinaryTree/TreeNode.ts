@@ -8,7 +8,7 @@ class TreeNode {
     right:TreeNode|null
 
 
-    constructor(value: Operators | MathStructure, left=null, right=null){
+    constructor(value: Operators | MathStructure, left:TreeNode|null=null, right:TreeNode|null=null){
         this.value = value
         this.left = left
         this.right = right

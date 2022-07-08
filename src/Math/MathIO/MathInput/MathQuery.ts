@@ -1,12 +1,16 @@
 import BinaryTree from "../../../BinaryTree/BinaryTree"
+import TreeNode from "../../../BinaryTree/TreeNode"
 import Operators from "../../Operators"
 import QueryUtils from "../../Utils/Utils"
+import MathResult from "../MathOutput/MathResult"
+import ResultStep from "../MathOutput/ResultStep"
 import MathSubQuery from "./MathSubQuery"
 
 class MathQuery {
 
     rawQuery:string
     private queryTree:BinaryTree = new BinaryTree()
+    private mathSubQueryHead:MathSubQuery|null = null
 
     constructor(rawQuery:string){
         this.rawQuery = rawQuery
@@ -18,9 +22,22 @@ class MathQuery {
         return this.queryTree
     }
 
+    resolveAlgebra():MathResult|null{
+
+        var stepByStep:ResultStep[] = []
+
+        if(this.getQueryTree().getHead() instanceof TreeNode && this.mathSubQueryHead instanceof MathSubQuery){
+            let resultado = this.mathSubQueryHead.resolveAlgebra(this.getQueryTree().getHead(),stepbystep = stepByStep)
+            return new MathResult(this.rawQuery, resultado, stepByStep)
+        }
+
+        return null
+    }
+
     private createTree(){
 
-        this.queryTree.head = new MathSubQuery(this.rawQuery).getNode() // Obtenemos la cabecera
+        this.mathSubQueryHead = new MathSubQuery(this.rawQuery)
+        this.queryTree.head = this.mathSubQueryHead.getQueryNode()// Obtenemos la cabecera
 
     }
 
