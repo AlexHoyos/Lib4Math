@@ -68,10 +68,27 @@ class Fraction extends MathStructure{
 
     static div(frac1:Fraction, frac2:Fraction, stepbystep:ResultStep[]=[]): Fraction{
 
+        stepbystep.push(new ResultStep(
+            "\\text{Dividimos }"+frac1.print()+"\\div"+frac2.print()
+        ))
+
+        stepbystep.push(new ResultStep(
+            "\\text{Obtenemos el numerador: }"+frac1.numerator.print()+"*"+frac2.denominator.print()
+        ))
+        stepbystep.push(new ResultStep(
+            "\\text{Obtenemos el denominador: }"+frac1.denominator.print()+"*"+frac2.numerator.print()
+        ))
         let numerator = Polinomio.multp( frac1.numerator, frac2.denominator )
         let denominator = Polinomio.multp(frac1.denominator, frac2.numerator)
-        var fractionResult = new Fraction(numerator, denominator)
 
+        stepbystep.push(new ResultStep(
+            "\\text{Numerador: }"+numerator.print()+"\\text{, Denominador: }"+denominator.print()
+        ))
+
+        var fractionResult = new Fraction(numerator, denominator)
+        stepbystep.push(new ResultStep(
+            "\\text{Entonces: }"+frac1.print()+"\\div"+frac2.print()+"="+fractionResult.print()
+        ))
 
         return fractionResult
 
@@ -86,10 +103,37 @@ class Fraction extends MathStructure{
             denominator   denominator                  frac1.denominator*frac2.denominator
         */
 
-        let numerator = Polinomio.sum( Polinomio.multp(frac1.numerator, frac2.denominator), Polinomio.multp(frac2.numerator, frac1.denominator) )
-        let denominator = Polinomio.multp(frac1.denominator, frac2.denominator)
+        stepbystep.push(new ResultStep(
+            "\\text{Sumamos }"+frac1.print()+"+"+frac2.print()
+        ))
 
-        return new Fraction(numerator, denominator)
+        stepbystep.push(new ResultStep(
+            "\\text{Obtenemos numerador: }("+frac1.numerator.print()+")*("+frac2.denominator.print()+")+("+frac1.denominator.print()+")*("+frac2.numerator.print()+")"
+        ))
+
+        let numerator = Polinomio.sum( Polinomio.multp(frac1.numerator, frac2.denominator), Polinomio.multp(frac2.numerator, frac1.denominator) )
+        stepbystep.push(new ResultStep(
+            "\\text{Numerador: }"+numerator.print()
+        ))
+        stepbystep.push(new ResultStep(
+            "\\text{Obtenemos denominador: }("+frac1.denominator.print()+")*("+frac2.denominator.print()+")"
+        ))
+        let denominator = Polinomio.multp(frac1.denominator, frac2.denominator)
+        stepbystep.push(new ResultStep(
+            "\\text{Denominador: }"+denominator.print()
+        ))
+
+        stepbystep.push(new ResultStep(
+            "\\text{Numerador: }"+numerator.print()+"\\text{, Denominador: }"+denominator.print()
+        ))
+
+        var fractionResult = new Fraction(numerator, denominator)
+
+        stepbystep.push(new ResultStep(
+            "\\text{Entonces: }"+frac1.print()+"+"+frac2.print()+"="+fractionResult.print()
+        ))
+
+        return fractionResult
     }
 
 }
