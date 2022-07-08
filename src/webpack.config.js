@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: "lib4math.js", // <--- Will be compiled to this single file
-    library: 'sc',
+    library: 'lm',
     libraryTarget: 'umd'
   },
   resolve: {
