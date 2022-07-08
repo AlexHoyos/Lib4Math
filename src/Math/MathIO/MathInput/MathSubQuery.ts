@@ -63,8 +63,20 @@ class MathSubQuery {
 
     private generateTreeNode():void {
 
-        var operatorIdx = this.getOperator()
         var queryArray = this.subQuery.split('')
+        let openParentesis = queryArray.indexOf('(')
+        let closeParentesis = QueryUtils.getIndexOfCloseParentesis(queryArray, openParentesis)
+
+        if(queryArray.indexOf('(') == 0 && closeParentesis == (queryArray.length-1)){
+            queryArray.splice(closeParentesis, 1)
+            queryArray.splice(openParentesis, 1)
+        }
+
+        // Save changes
+        this.subQuery = queryArray.join('')
+
+        var operatorIdx = this.getOperator()
+
         if(operatorIdx != -1){
 
             let operator:any = queryArray[operatorIdx]

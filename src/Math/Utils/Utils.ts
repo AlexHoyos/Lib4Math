@@ -48,6 +48,23 @@ const QueryUtils = {
 
     isInsideParentesis: function(queryArray:string[], index:number):boolean {
 
+
+        // Check if parentesis exists
+        var openParentesis = queryArray.lastIndexOf('(')
+        var closeParentesis = this.getIndexOfCloseParentesis(queryArray, openParentesis)
+        if(openParentesis != -1){
+
+            if(openParentesis > index){
+                var tmpArr = JSON.parse(JSON.stringify(queryArray))
+                tmpArr.splice(openParentesis, (closeParentesis-openParentesis)+1 )
+                return this.isInsideParentesis(tmpArr, index)
+            } else {
+
+                if(closeParentesis > index)
+                    return true
+            } 
+        }
+
         return false
 
     },
