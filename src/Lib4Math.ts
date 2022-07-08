@@ -8,7 +8,7 @@ import Variable from "./Math/MathStructures/PrimitiveStructures/Literal/Variable
 import Monomio from "./Math/MathStructures/PrimitiveStructures/Monomio"
 import Operators from "./Math/Operators"
 
-class SuperCalcu {
+class Lib4math {
 
     constructor(){
         
@@ -18,9 +18,9 @@ class SuperCalcu {
 
         var queryArray = rawExpresion.split('')
         var expresionTree = new BinaryTree()
-        expresionTree.head = SuperCalcu.processExpresion(queryArray)
+        expresionTree.head = Lib4math.processExpresion(queryArray)
         if(expresionTree.getHead() instanceof TreeNode){
-            let resultado = SuperCalcu.resolve(expresionTree.head)
+            let resultado = Lib4math.resolve(expresionTree.head)
             return resultado
         }
 
@@ -38,8 +38,8 @@ class SuperCalcu {
             var b: MathStructure
     
             if(BinaryTree.left instanceof TreeNode && BinaryTree.right instanceof TreeNode){
-                a = SuperCalcu.resolve(BinaryTree.left)
-                b = SuperCalcu.resolve(BinaryTree.right)
+                a = Lib4math.resolve(BinaryTree.left)
+                b = Lib4math.resolve(BinaryTree.right)
             
     
                 let operator = BinaryTree.value as Operators
@@ -68,7 +68,7 @@ class SuperCalcu {
         var tmp = JSON.parse(JSON.stringify(expresion))
     
         var openIdx = tmp.indexOf("(")
-        var closeIdx = SuperCalcu.getIndexOfCloseParentesis(tmp, openIdx)
+        var closeIdx = Lib4math.getIndexOfCloseParentesis(tmp, openIdx)
     
        if(openIdx == 0 && closeIdx == (tmp.length-1)){
             tmp = tmp.slice(openIdx+1, closeIdx)
@@ -78,7 +78,7 @@ class SuperCalcu {
         while(openIdx != -1){
     
             openIdx = tmp.indexOf("(")
-            closeIdx = SuperCalcu.getIndexOfCloseParentesis(tmp, openIdx)
+            closeIdx = Lib4math.getIndexOfCloseParentesis(tmp, openIdx)
     
             for(let i = openIdx; i<=closeIdx; i++){
                 tmp[i] = 'x'
@@ -109,18 +109,18 @@ class SuperCalcu {
         var right:any = null
         var value:any = 0
     
-        if(operator == '^' && !SuperCalcu.isNumber(expresion[tmp.indexOf(operator)-1]) &&  expresion[tmp.indexOf(operator)-1] != ')')
+        if(operator == '^' && !Lib4math.isNumber(expresion[tmp.indexOf(operator)-1]) &&  expresion[tmp.indexOf(operator)-1] != ')')
             operator = undefined
     
         if(operator != undefined){
             value=operator
             if(tmp.indexOf(operator) != (tmp.length-1))
-                right = SuperCalcu.processExpresion(expresion.slice((tmp.indexOf(operator)+1), (tmp.length)))
+                right = Lib4math.processExpresion(expresion.slice((tmp.indexOf(operator)+1), (tmp.length)))
             if(tmp.indexOf(operator) != 0)
-                left = SuperCalcu.processExpresion(expresion.slice(0, tmp.indexOf(operator)))
+                left = Lib4math.processExpresion(expresion.slice(0, tmp.indexOf(operator)))
         } else {
     
-            let monomio = SuperCalcu.RawValueToMonomio(expresion.join(''))
+            let monomio = Lib4math.RawValueToMonomio(expresion.join(''))
             let polinomio = new Polinomio()
             polinomio.addMonomio(monomio)
             value = polinomio
@@ -137,7 +137,7 @@ class SuperCalcu {
         var coeficiente:any = ''
         var literales:Literal = new Literal()
     
-        while(SuperCalcu.isNumber(value[0])){
+        while(Lib4math.isNumber(value[0])){
             
             coeficiente += value[0]
             value = value.slice(1, value.length)
@@ -147,14 +147,14 @@ class SuperCalcu {
             coeficiente = 1
         }
     
-        while(SuperCalcu.isNumber(value[0]) == false && SuperCalcu.isOperator(value[0]) == false && value.length > 0){
+        while(Lib4math.isNumber(value[0]) == false && Lib4math.isOperator(value[0]) == false && value.length > 0){
             let exp = undefined
             let literal:Variable = new Variable(value[0], 0)
             value = value.slice(1, value.length)
             
             if(value[0] == '^'){
                 value = value.slice(1, value.length)
-                while(SuperCalcu.isNumber(value[0])){
+                while(Lib4math.isNumber(value[0])){
                     if(exp == undefined)
                         exp = ''
                     
@@ -175,7 +175,7 @@ class SuperCalcu {
     
         }
     
-        return new Monomio(coeficiente, literales)
+        return new Monomio(parseInt(coeficiente), literales)
     
     }
     
@@ -221,5 +221,5 @@ class SuperCalcu {
 
 console.log("lib4math v2 %cLoaded Correctly!", "color: #24E211;")
 
-export default SuperCalcu
-export {SuperCalcu as SuperCalcu}
+export default Lib4math
+export {Lib4math as Lib4math}

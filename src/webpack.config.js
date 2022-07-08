@@ -5,7 +5,7 @@ module.exports = {
   mode: "development",
   devtool: "inline-source-map",
   entry: {
-    main: "./SuperCalcu.ts",
+    main: "./Lib4Math.ts",
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
