@@ -1,10 +1,10 @@
 {
-  "name": "supercalcu",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "lib4math",
+  "version": "2.0",
+  "description": "General MATH Js Library",
+  "main": "src/Lib4Math.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "cd src && npx webpack && cd ../"
   },
   "author": "",
   "license": "ISC",

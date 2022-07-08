@@ -1,3 +1,6 @@
 node_modules/
 dist/
 testing/
+*.rar
+*.zip
+*.tar.gz

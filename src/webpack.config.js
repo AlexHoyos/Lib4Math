@@ -9,7 +9,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: "app-bundle.js", // <--- Will be compiled to this single file
+    filename: "lib4math.js", // <--- Will be compiled to this single file
     library: 'sc',
     libraryTarget: 'umd'
   },
