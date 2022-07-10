@@ -2,10 +2,14 @@ import Fraction from "./Fraction";
 import MathStructure from "../MathStructure";
 import Monomio from "../PrimitiveStructures/Monomio";
 import ResultStep from "../../MathIO/MathOutput/ResultStep";
+import Literal from "../PrimitiveStructures/Literal/Literal";
+import Variable from "../PrimitiveStructures/Literal/Variable";
+import Concat from "./Concat";
 
 class Polinomio extends MathStructure{
     monomios: Monomio[]
     exp: number
+    orderVariable: Variable|null = null
 
     constructor(monomios: Monomio[] = [], exp = 1){
         super()
@@ -52,6 +56,12 @@ class Polinomio extends MathStructure{
         this.monomios.push(monomio)
         if(fusion)
             this.simplify()
+    }
+
+    addMonomioList(monomios:Monomio[], fusion = false){
+        monomios.forEach(monomio => {
+            this.addMonomio(monomio, fusion)
+        })
     }
 
     hasMonomio(monomio:Monomio){
@@ -102,13 +112,85 @@ class Polinomio extends MathStructure{
                 var mono2 = this.monomios[j]
                 var sum = Monomio.sum(mono1, mono2)
                 if(sum instanceof Monomio){
-                    this.monomios[i] = sum
-                    this.monomios.splice(j, 1)
+
+                    if(sum.coeficiente != 0){
+                        this.monomios[i] = sum
+                        this.monomios.splice(j, 1)
+                    } else {
+                        this.monomios.splice(j, 1)
+                        this.monomios.splice(i, 1)
+                    }
+                    
                 }
 
             }
 
         }
+
+        this.orderAsc()
+
+    }
+
+    orderAsc(): void {
+        if(this.monomios.length > 0){
+            if(this.monomios[0].hasVariables()){
+                this.orderVariable = this.monomios[0].literal.variables[0]
+                this.monomios = this.orderQuicksortAsc(this.monomios, this.orderVariable)
+            }
+        }
+        
+    }
+
+    hasVariable(variable:Variable, strict:boolean = false):boolean{
+        var HasVariable = false
+
+        this.monomios.forEach(monomio => {
+            if(monomio.hasVariables()){
+
+                if(monomio.literal.hasVariable(variable, strict)){
+                    HasVariable = true
+                }
+
+            }
+        })
+
+        return HasVariable
+    }
+
+    isZero(){
+        var isZero = true
+        this.monomios.forEach(monomio => {
+            if(monomio.isZero() == false)
+                isZero = false
+        })
+
+        return isZero
+    }
+
+    orderQuicksortAsc(unsortedArray:Monomio[], variable:Variable): Monomio[]{
+
+        // QUICKSORT
+        var sortedArray:Monomio[] = []
+
+        if(unsortedArray.length > 1){
+            
+            let pivotIdx:number = Math.floor(unsortedArray.length/2)
+            let pivot:Monomio = unsortedArray[pivotIdx]
+            var pivotExpValue = pivot.literal.getVarExpValue(variable)
+            unsortedArray.splice(pivotIdx, 1)
+            let higher: Monomio[] = this.orderQuicksortAsc( unsortedArray.filter(monomio => monomio.literal.getVarExpValue(variable) >= pivotExpValue), variable )
+            let lower: Monomio[] = this.orderQuicksortAsc(unsortedArray.filter(monomio => monomio.literal.getVarExpValue(variable) < pivotExpValue), variable)
+            sortedArray= [
+                ...higher, pivot, ...lower
+            ]
+            return sortedArray
+            
+        }
+
+        if(unsortedArray.length == 1)
+            sortedArray = unsortedArray
+
+        return sortedArray
 
     }
 
@@ -131,12 +213,19 @@ class Polinomio extends MathStructure{
         this.monomios.forEach(mono => {
             poliCloned.addMonomio(mono.clone())
         })
+        poliCloned.orderVariable = this.orderVariable
         return poliCloned
     }
 
     static sum(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
 
         var suma = poli1.clone()
+
+        if(poli1.isZero())
+            return poli2
+
+        if(poli2.isZero())
+            return poli1
 
         poli2.monomios.forEach(monomio => {
             suma.addMonomio(monomio)
@@ -173,26 +262,59 @@ class Polinomio extends MathStructure{
         return result
     }
 
-    static div(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio | Fraction{
+    static div(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio | Fraction | Concat{
 
         if(poli1.monomios.length == 1 && poli2.monomios.length == 1){
-            var result = new Polinomio()
-            result.addMonomio( Monomio.div(poli1.monomios[0], poli2.monomios[0]) )
-            return result
+            var result:Monomio|Fraction = Monomio.div(poli1.monomios[0], poli2.monomios[0])
+            if(result instanceof Monomio)
+                return new Polinomio([result])
+            else
+                return result
         }
 
-        if(poli1.compareBase(poli2)){
-
-            poli1.addExp( poli2.exp * -1 )
-
-            if(poli1.exp == 0)
-                poli1.monomios = [ new Monomio() ]
-
-            return poli1
-
-        } else {
-            return new Fraction(poli1, poli2)
+        if(poli1.monomios.length == 0 || poli2.monomios.length == 0){
+            return new Polinomio([new Monomio(0)])
         }
+
+        var poli1Clone:Polinomio = poli1.clone()
+        var poli2Clone:Polinomio = poli2.clone()
+        var variable:Variable|null = poli1.orderVariable
+
+        if(variable instanceof Variable){
+
+            variable = variable.clone()
+
+            if(poli2Clone.hasVariable(variable) && poli2Clone.orderVariable instanceof Variable){
+
+                if(!(poli2Clone.orderVariable.compareLetter(variable.letter)))
+                    poli2Clone.orderQuicksortAsc(poli2Clone.monomios, variable)
+
+                var numMon:Monomio = poli1Clone.monomios[0].clone()
+                var divMon:Monomio = poli2Clone.monomios[0].clone()
+
+                if(numMon.literal.hasVariable(variable)){
+                    
+                    if(numMon.literal.getVarExpValue(variable) >= divMon.literal.getVarExpValue(variable)){
+                        var resultConcat: Concat = new Concat()
+                        var resultDivTerm:Monomio|Fraction = Monomio.div(numMon, divMon, true)
+                        if(resultDivTerm instanceof Monomio){
+                            var additionToRemainder:Polinomio = Polinomio.multp(poli2Clone, new Polinomio([resultDivTerm]))
+                            additionToRemainder.toggleSign()
+                            var remainder: Polinomio = Polinomio.sum(poli1Clone, additionToRemainder)
+                            resultConcat.addStructure(new Polinomio([resultDivTerm.clone()]))
+                            resultConcat.addStructure(Polinomio.div(remainder.clone(), poli2Clone))
+                            resultConcat.simplify()
+                            return resultConcat
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+
+        return new Fraction(poli1Clone, poli2Clone)
 
     }
 

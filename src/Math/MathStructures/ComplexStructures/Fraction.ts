@@ -13,11 +13,14 @@ class Fraction extends MathStructure{
     }
 
     print(){
-        return "\\frac{"+this.numerator.print()+"}{"+this.denominator.print()+"}"
+        console.log("fraction is zero " + this.isZero())
+        if(this.isZero() == false)
+            return "\\frac{"+this.numerator.print()+"}{"+this.denominator.print()+"}"
+        else
+            return ""
     }
 
     simplify(): void {
-        throw new Error("Method not implemented.");
     }
     compare(a: MathStructure): boolean {
         throw new Error("Method not implemented.");
@@ -32,6 +35,11 @@ class Fraction extends MathStructure{
 
     toFraction(): Fraction {
         return this
+    }
+
+    isZero():boolean {
+        this.numerator.simplify()
+        return this.numerator.isZero()
     }
 
     static multp(frac1:Fraction, frac2:Fraction, stepbystep:ResultStep[]=[]): Fraction{

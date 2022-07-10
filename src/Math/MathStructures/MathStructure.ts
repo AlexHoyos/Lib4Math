@@ -8,6 +8,7 @@ abstract class MathStructure{
     abstract clone():MathStructure
     abstract toggleSign(): void
     abstract toFraction(): Fraction
+    abstract isZero(): boolean
 
 }
 

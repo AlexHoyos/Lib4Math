@@ -12,7 +12,7 @@ class Monomio extends MathStructure{
 
     constructor(coeficiente = 1, literal = new Literal()){
         super();
-        this.coeficiente = coeficiente
+        this.coeficiente = parseFloat(coeficiente.toFixed(5))
         this.literal = literal
 
     }
@@ -73,12 +73,35 @@ class Monomio extends MathStructure{
 
     }
 
+    wipeLiteral(){
+        this.literal = new Literal()
+    }
+
     toggleVariableExpSigns(){
         this.literal.toggleVariableExpSigns()
     }
 
     toFraction(): Fraction {
         return new Fraction(new Polinomio([this]), new Polinomio([new Monomio(1)]))
+    }
+
+    hasVariables(): boolean {
+        if(this.literal.variables.length > 0){
+
+            console.log("coeficiente = "+this.coeficiente)
+            if(this.coeficiente != 0){
+                return true
+            } else {
+                return false
+            }
+
+        } else {
+            return false
+        }
+    }
+
+    isZero():boolean {
+        return (this.coeficiente == 0)
     }
 
     static sum(mono1:Monomio, mono2:Monomio){
@@ -115,10 +138,78 @@ class Monomio extends MathStructure{
         return result
 
     }
+    /*
+    static div(mono1:Monomio, mono2:Monomio): Polinomio | Fraction{
 
-    static div(mono1:Monomio, mono2:Monomio){
-        mono2.toggleVariableExpSigns()
-        return Monomio.multp(mono1, mono2)
+        if(mono1.compareLiteral(mono2.literal)){
+            var newCoeficiente = mono1.coeficiente/mono2.coeficiente
+            if(newCoeficiente%1 == 0){
+                return new Polinomio([ new Monomio(newCoeficiente)])
+            } else {
+                return new Fraction(new Polinomio([mono1]), new Polinomio([mono2]))
+            }
+
+        } else {
+            return new Fraction(new Polinomio([mono1]), new Polinomio([mono2]))
+        }
+
+    }*/
+
+    /*
+        2xy       6
+        1yx^2     3
+
+        2yx2         2
+        x
+    */
+    static div(mono1:Monomio, mono2:Monomio, decimals:boolean = false): Monomio | Fraction {
+
+        console.log("here1")
+        if(mono1.hasVariables() == false || mono2.hasVariables() == false)
+            return new Fraction(new Polinomio([mono1]), new Polinomio([mono2]))
+        
+        console.log("here2")
+        if(mono1.compare(mono2) == true)
+            return new Monomio(1, new Literal())
+
+        console.log("here3")
+        if(mono1.compareLiteral(mono2.literal)){
+            var newCoeficiente = mono1.coeficiente/mono2.coeficiente
+            if(newCoeficiente%1 == 0 || decimals == true){
+                return new Monomio(newCoeficiente)
+            } else {
+                let mono1Clone = mono1.clone()
+                mono1Clone.wipeLiteral()
+                let mono2Clone = mono2.clone()
+                mono2Clone.wipeLiteral()
+                return new Fraction(new Polinomio([mono1Clone]), new Polinomio([mono2Clone]))
+            }
+        }
+
+        var mono1Clone = mono1.clone()
+        var mono2Clone = mono2.clone()
+        var mono2Literal = mono2Clone.literal
+        mono2Literal.toggleVariableExpSigns()
+        mono1Clone.addLiteral(mono2Literal, true)
+        mono2Clone.wipeLiteral()
+        var negativeExpVariables:Variable[] = mono1Clone.literal.clone().variables.filter(variable => variable.exp < 0 )
+        mono2Literal = new Literal(negativeExpVariables)
+        mono2Literal.toggleVariableExpSigns()
+        mono2Clone.addLiteral(mono2Literal)
+        mono1Clone.addLiteral(mono2Literal, true) // removing negative exp variables
+        
+        var newCoeficiente = mono1Clone.coeficiente/mono2Clone.coeficiente
+        console.log("New Coeficiente ", newCoeficiente)
+        if(newCoeficiente%1 == 0 || decimals == true ){
+            mono2Clone.coeficiente = 1
+            mono1Clone.coeficiente = newCoeficiente
+        }
+
+        if(mono2Clone.hasVariables() == false && mono2Clone.coeficiente == 1){
+            return mono1Clone
+        }
+
+        return new Fraction(new Polinomio([mono1Clone]), new Polinomio([mono2Clone]))
     }
 
     static RawValueToMonomio(value:any): Monomio{
@@ -127,7 +218,7 @@ class Monomio extends MathStructure{
         var coeficiente:any = ''
         var literales:Literal = new Literal()
     
-        while(QueryUtils.isNumeric(value[0])){
+        while(QueryUtils.isNumeric(value[0]) || value[0] == '.'){
             
             coeficiente += value[0]
             value = value.slice(1, value.length)
@@ -165,7 +256,7 @@ class Monomio extends MathStructure{
     
         }
     
-        return new Monomio(parseInt(coeficiente), literales)
+        return new Monomio(parseFloat(coeficiente), literales)
     
     }
 

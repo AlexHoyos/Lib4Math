@@ -1,9 +1,9 @@
-import ResultStep from "../MathIO/MathOutput/ResultStep"
-import Fraction from "../MathStructures/ComplexStructures/Fraction"
-import Polinomio from "../MathStructures/ComplexStructures/Polinomio"
-import MathStructure from "../MathStructures/MathStructure"
+import ResultStep from "../../MathIO/MathOutput/ResultStep"
+import Fraction from "../../MathStructures/ComplexStructures/Fraction"
+import Polinomio from "../../MathStructures/ComplexStructures/Polinomio"
+import MathStructure from "../../MathStructures/MathStructure"
 
-class MathCalculator {
+class AlgebraCalculator {
     
     static multp(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
         
@@ -142,7 +142,7 @@ class MathCalculator {
         ))
 
         struct2.toggleSign()
-        return MathCalculator.sum(struct1, struct2, stepbystep)
+        return AlgebraCalculator.sum(struct1, struct2, stepbystep)
 
     }
     static pow(struct1:MathStructure, struct2:Polinomio,stepbystep:ResultStep[]=[]):MathStructure {
@@ -156,4 +156,4 @@ class MathCalculator {
 
 }
 
-export default MathCalculator
+export default AlgebraCalculator

@@ -1,6 +1,6 @@
 import TreeNode from "../../../BinaryTree/TreeNode"
 import Polinomio from "../../MathStructures/ComplexStructures/Polinomio"
-import MathCalculator from "../../Utils/MathCalculator"
+import AlgebraCalculator from "../../Branches/Algebra/AlgebraCalculator"
 import MathStructure from "../../MathStructures/MathStructure"
 import Monomio from "../../MathStructures/PrimitiveStructures/Monomio"
 import Operators from "../../MathStructures/Operators"
@@ -41,15 +41,15 @@ class MathSubQuery {
                     let operator = BinaryTree.value as Operators
                     
                     if(operator === Operators.DIV)
-                        return MathCalculator.div(a,b, stepbystep)
+                        return AlgebraCalculator.div(a,b, stepbystep)
                     if(operator === Operators.MULTP)
-                        return MathCalculator.multp(a, b, stepbystep)
+                        return AlgebraCalculator.multp(a, b, stepbystep)
                     if(operator === Operators.SUM)
-                        return MathCalculator.sum(a, b, stepbystep)
+                        return AlgebraCalculator.sum(a, b, stepbystep)
                     if(operator === Operators.SUBS)
-                        return MathCalculator.subs(a,b, stepbystep)
+                        return AlgebraCalculator.subs(a,b, stepbystep)
                     if(operator === Operators.POW && b instanceof Polinomio)
-                        return MathCalculator.pow(a, b, stepbystep)
+                        return AlgebraCalculator.pow(a, b, stepbystep)
                     
                 }
         

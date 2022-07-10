@@ -4,7 +4,7 @@ class Literal {
 
     variables: Variable[]
 
-    constructor(variables = []){
+    constructor(variables:Variable[] = []){
         this.variables = variables
     }
 
@@ -12,6 +12,16 @@ class Literal {
         this.variables.push(variable)
         if(fusion)
             this.fusionVariables()
+    }
+
+
+    getVarExpValue(variable:Variable):number {
+
+        var searchedVariable:boolean|Variable = this.getVariable(variable)
+        if(searchedVariable instanceof Variable)
+            return searchedVariable.exp
+
+        return 0;
     }
 
     fusionVariables(){
@@ -56,6 +66,30 @@ class Literal {
 
                 if(ownVar.compareLetter(variable.letter))
                     HasVariable = true
+
+            }
+
+        })
+
+        return HasVariable
+
+    }
+
+    getVariable(variable:Variable, estrict = false): boolean | Variable{
+
+        var HasVariable: boolean | Variable = false
+
+        this.variables.forEach(ownVar => {
+
+            if(estrict){
+
+                if(ownVar.compare(variable))
+                    HasVariable = ownVar.clone()
+
+            } else {
+
+                if(ownVar.compareLetter(variable.letter))
+                    HasVariable = ownVar.clone()
 
             }
 
