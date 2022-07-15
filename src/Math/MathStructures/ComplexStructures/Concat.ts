@@ -1,3 +1,4 @@
+import PolinomiOperations from "../../MathOperations/Algebra/PolinomioOperations";
 import MathStructure from "../MathStructure";
 import Monomio from "../PrimitiveStructures/Monomio";
 import Fraction from "./Fraction";
@@ -53,7 +54,7 @@ class Concat extends MathStructure {
 
         polinomios.forEach(polinomio => {
             if(polinomio instanceof Polinomio){
-                finalPolinom = Polinomio.sum(finalPolinom, polinomio)
+                finalPolinom = PolinomiOperations.sum(finalPolinom, polinomio)
             }
         })
 

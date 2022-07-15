@@ -12,6 +12,4 @@ class SyntheticDivision {
         this.denominator = denominator
     }
 
-    
-
 }

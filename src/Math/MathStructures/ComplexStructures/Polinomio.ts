@@ -5,6 +5,7 @@ import ResultStep from "../../MathIO/MathOutput/ResultStep";
 import Literal from "../PrimitiveStructures/Literal/Literal";
 import Variable from "../PrimitiveStructures/Literal/Variable";
 import Concat from "./Concat";
+import MonomioOperations from "../../MathOperations/Algebra/MonomioOperations";
 
 class Polinomio extends MathStructure{
     monomios: Monomio[]
@@ -110,7 +111,7 @@ class Polinomio extends MathStructure{
 
                 var mono1 = this.monomios[i]
                 var mono2 = this.monomios[j]
-                var sum = Monomio.sum(mono1, mono2)
+                var sum = MonomioOperations.sum(mono1, mono2)
                 if(sum instanceof Monomio){
 
                     if(sum.coeficiente != 0){
@@ -215,121 +216,6 @@ class Polinomio extends MathStructure{
         })
         poliCloned.orderVariable = this.orderVariable
         return poliCloned
-    }
-
-    static sum(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
-
-        var suma = poli1.clone()
-
-        if(poli1.isZero())
-            return poli2
-
-        if(poli2.isZero())
-            return poli1
-
-        poli2.monomios.forEach(monomio => {
-            suma.addMonomio(monomio)
-        })
-        suma.simplify()
-
-        return suma
-
-    }
-
-    static subs(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
-
-        poli2.toggleMonoSigns()
-
-        var resta = Polinomio.sum(poli1, poli2)
-        return resta
-    }
-
-    static multp(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
-
-        var result = new Polinomio()
-
-        poli1.monomios.forEach(mono1 => {
-
-            poli2.monomios.forEach(mono2 => {
-
-                result.addMonomio( Monomio.multp(mono1, mono2) )
-
-            })
-
-        })
-
-        result.simplify()
-        return result
-    }
-
-    static div(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio | Fraction | Concat{
-
-        if(poli1.monomios.length == 1 && poli2.monomios.length == 1){
-            var result:Monomio|Fraction = Monomio.div(poli1.monomios[0], poli2.monomios[0])
-            if(result instanceof Monomio)
-                return new Polinomio([result])
-            else
-                return result
-        }
-
-        if(poli1.monomios.length == 0 || poli2.monomios.length == 0){
-            return new Polinomio([new Monomio(0)])
-        }
-
-        var poli1Clone:Polinomio = poli1.clone()
-        var poli2Clone:Polinomio = poli2.clone()
-        var variable:Variable|null = poli1.orderVariable
-
-        if(variable instanceof Variable){
-
-            variable = variable.clone()
-
-            if(poli2Clone.hasVariable(variable) && poli2Clone.orderVariable instanceof Variable){
-
-                if(!(poli2Clone.orderVariable.compareLetter(variable.letter)))
-                    poli2Clone.orderQuicksortAsc(poli2Clone.monomios, variable)
-
-                var numMon:Monomio = poli1Clone.monomios[0].clone()
-                var divMon:Monomio = poli2Clone.monomios[0].clone()
-
-                if(numMon.literal.hasVariable(variable)){
-                    
-                    if(numMon.literal.getVarExpValue(variable) >= divMon.literal.getVarExpValue(variable)){
-                        var resultConcat: Concat = new Concat()
-                        var resultDivTerm:Monomio|Fraction = Monomio.div(numMon, divMon, true)
-                        if(resultDivTerm instanceof Monomio){
-                            var additionToRemainder:Polinomio = Polinomio.multp(poli2Clone, new Polinomio([resultDivTerm]))
-                            additionToRemainder.toggleSign()
-                            var remainder: Polinomio = Polinomio.sum(poli1Clone, additionToRemainder)
-                            resultConcat.addStructure(new Polinomio([resultDivTerm.clone()]))
-                            resultConcat.addStructure(Polinomio.div(remainder.clone(), poli2Clone))
-                            resultConcat.simplify()
-                            return resultConcat
-                        }
-                    }
-
-                }
-
-            }
-        }
-
-
-        return new Fraction(poli1Clone, poli2Clone)
-
-    }
-
-    static pow(poli1:Polinomio, poli2:Polinomio, stepbystep:ResultStep[]=[]): Polinomio{
-
-        var Exp = poli2.monomios[0].coeficiente
-
-        var result = new Polinomio([ new Monomio() ])
-
-        for(let i = 0; i<Exp; i++){
-            result = Polinomio.multp(result, poli1)
-        }
-
-        return result
-
     }
 
 

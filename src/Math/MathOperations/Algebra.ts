@@ -1,13 +1,25 @@
-import ResultStep from "../../MathIO/MathOutput/ResultStep"
-import FractionOperations from "../../MathOperations/Algebra/FractionOperations"
-import PolinomiOperations from "../../MathOperations/Algebra/PolinomioOperations"
-import Fraction from "../../MathStructures/ComplexStructures/Fraction"
-import Polinomio from "../../MathStructures/ComplexStructures/Polinomio"
-import MathStructure from "../../MathStructures/MathStructure"
+import ResultStep from "../MathIO/MathOutput/ResultStep"
+import Fraction from "../MathStructures/ComplexStructures/Fraction"
+import Polinomio from "../MathStructures/ComplexStructures/Polinomio"
+import MathStructure from "../MathStructures/MathStructure"
+import FractionOperations from "./Algebra/FractionOperations"
+import PolinomiOperations from "./Algebra/PolinomioOperations"
 
-class AlgebraCalculator {
+class Algebra {
     
-    static multp(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
+    private static instance:Algebra
+
+    private constructor(){}
+
+    static getCalculator():Algebra {
+        if(this.instance == null)
+            this.instance = new Algebra()
+
+        return this.instance
+
+    }
+
+    multp(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
         
         stepbystep.push(new ResultStep(
             "\\text{Multiplicamos }("+struct1.print()+")*("+struct2.print()+")"
@@ -33,22 +45,15 @@ class AlgebraCalculator {
             
 
         if(struct1 instanceof Polinomio && struct2 instanceof Polinomio){
-            result = PolinomiOperations.multp(struct1, struct2, stepbystep)
-
-            stepbystep.push(new ResultStep(
-                "\\text{Entonces: }("+struct1.print()+")*("+struct2.print()+")="+result.print()
-            ))
-
-            return result
+            return PolinomiOperations.multp(struct1, struct2, stepbystep)
         }
             
-        
 
         return new Polinomio()
         
     }
 
-    static div(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
+    div(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
 
         stepbystep.push(new ResultStep(
             "\\text{Dividimos }("+struct1.print()+")\\div("+struct2.print()+")"
@@ -87,7 +92,7 @@ class AlgebraCalculator {
 
     }
 
-    static sum(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
+    sum(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
 
         stepbystep.push(new ResultStep(
             "\\text{Sumamos }("+struct1.print()+")+("+struct2.print()+")"
@@ -120,7 +125,7 @@ class AlgebraCalculator {
         return new Polinomio()
 
     }
-    static subs(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
+    subs(struct1:MathStructure, struct2:MathStructure, stepbystep:ResultStep[]=[]):MathStructure {
 
         stepbystep.push(new ResultStep(
             "\\text{Restamos }("+struct1.print()+")-("+struct2.print()+")"
@@ -144,10 +149,10 @@ class AlgebraCalculator {
         ))
 
         struct2.toggleSign()
-        return AlgebraCalculator.sum(struct1, struct2, stepbystep)
+        return Algebra.getCalculator().sum(struct1, struct2, stepbystep)
 
     }
-    static pow(struct1:MathStructure, struct2:Polinomio,stepbystep:ResultStep[]=[]):MathStructure {
+    pow(struct1:MathStructure, struct2:Polinomio,stepbystep:ResultStep[]=[]):MathStructure {
 
         if(struct1 instanceof Polinomio){
             return PolinomiOperations.pow(struct1, struct2, stepbystep) 
@@ -158,4 +163,4 @@ class AlgebraCalculator {
 
 }
 
-export default AlgebraCalculator
+export default Algebra
