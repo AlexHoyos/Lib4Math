@@ -1,11 +1,11 @@
 import TreeNode from "../../../BinaryTree/TreeNode"
 import Polinomio from "../../MathStructures/ComplexStructures/Polinomio"
-import AlgebraCalculator from "../../Branches/Algebra/AlgebraCalculator"
 import MathStructure from "../../MathStructures/MathStructure"
 import Monomio from "../../MathStructures/PrimitiveStructures/Monomio"
 import Operators from "../../MathStructures/Operators"
 import QueryUtils from "../../Utils/Utils"
 import ResultStep from "../MathOutput/ResultStep"
+import Algebra from "../../MathOperations/Algebra"
 
 class MathSubQuery {
 
@@ -24,6 +24,8 @@ class MathSubQuery {
 
     resolveAlgebra(BinaryTree: TreeNode|null = this.queryNode, stepbystep:ResultStep[] = []): MathStructure{
         
+        var calculator = Algebra.getCalculator()
+
         if(BinaryTree != null){
 
             if (BinaryTree.value instanceof MathStructure){
@@ -41,15 +43,15 @@ class MathSubQuery {
                     let operator = BinaryTree.value as Operators
                     
                     if(operator === Operators.DIV)
-                        return AlgebraCalculator.div(a,b, stepbystep)
+                        return calculator.div(a,b, stepbystep)
                     if(operator === Operators.MULTP)
-                        return AlgebraCalculator.multp(a, b, stepbystep)
+                        return calculator.multp(a, b, stepbystep)
                     if(operator === Operators.SUM)
-                        return AlgebraCalculator.sum(a, b, stepbystep)
+                        return calculator.sum(a, b, stepbystep)
                     if(operator === Operators.SUBS)
-                        return AlgebraCalculator.subs(a,b, stepbystep)
+                        return calculator.subs(a,b, stepbystep)
                     if(operator === Operators.POW && b instanceof Polinomio)
-                        return AlgebraCalculator.pow(a, b, stepbystep)
+                        return calculator.pow(a, b, stepbystep)
                     
                 }
         
