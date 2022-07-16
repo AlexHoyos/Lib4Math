@@ -1,4 +1,4 @@
-import ResultStep from "../../../MathIO/MathOutput/ResultStep";
+import ResultStep from "../../../MathIO/MathOutput/StepByStep/ResultStep";
 import Polinomio from "../../../MathStructures/ComplexStructures/Polinomio";
 import Monomio from "../../../MathStructures/PrimitiveStructures/Monomio";
 import IOperation from "../../IOperation";

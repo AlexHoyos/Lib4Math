@@ -1,4 +1,4 @@
-import ResultStep from "../MathIO/MathOutput/ResultStep";
+import ResultStep from "../MathIO/MathOutput/StepByStep/ResultStep";
 import MathStructure from "../MathStructures/MathStructure";
 
 interface IOperation {

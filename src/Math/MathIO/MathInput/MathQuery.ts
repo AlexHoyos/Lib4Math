@@ -3,7 +3,7 @@ import TreeNode from "../../../BinaryTree/TreeNode"
 import Operators from "../../MathStructures/Operators"
 import QueryUtils from "../../Utils/Utils"
 import MathResult from "../MathOutput/MathResult"
-import ResultStep from "../MathOutput/ResultStep"
+import ResultStep from "../MathOutput/StepByStep/ResultStep"
 import MathSubQuery from "./MathSubQuery"
 
 class MathQuery {

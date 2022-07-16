@@ -4,7 +4,7 @@ import MathStructure from "../../MathStructures/MathStructure"
 import Monomio from "../../MathStructures/PrimitiveStructures/Monomio"
 import Operators from "../../MathStructures/Operators"
 import QueryUtils from "../../Utils/Utils"
-import ResultStep from "../MathOutput/ResultStep"
+import ResultStep from "../MathOutput/StepByStep/ResultStep"
 import Algebra from "../../MathOperations/Algebra"
 
 class MathSubQuery {

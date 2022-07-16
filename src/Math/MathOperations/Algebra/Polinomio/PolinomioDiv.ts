@@ -1,4 +1,4 @@
-import ResultStep from "../../../MathIO/MathOutput/ResultStep";
+import ResultStep from "../../../MathIO/MathOutput/StepByStep/ResultStep";
 import Concat from "../../../MathStructures/ComplexStructures/Concat";
 import Fraction from "../../../MathStructures/ComplexStructures/Fraction";
 import Polinomio from "../../../MathStructures/ComplexStructures/Polinomio";

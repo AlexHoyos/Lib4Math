@@ -1,4 +1,4 @@
-import ResultStep from "../../../MathIO/MathOutput/ResultStep";
+import ResultStep from "../../../MathIO/MathOutput/StepByStep/ResultStep";
 import Fraction from "../../../MathStructures/ComplexStructures/Fraction";
 import MathStructure from "../../../MathStructures/MathStructure";
 import IOperation from "../../IOperation";

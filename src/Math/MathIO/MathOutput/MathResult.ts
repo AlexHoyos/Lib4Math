@@ -1,5 +1,5 @@
 import MathStructure from '../../MathStructures/MathStructure'
-import ResultStep from './ResultStep'
+import ResultStep from './StepByStep/ResultStep'
 class MathResult {
 
     queryExpresion:string
