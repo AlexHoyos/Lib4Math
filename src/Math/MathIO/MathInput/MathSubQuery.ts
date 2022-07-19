@@ -6,6 +6,7 @@ import Operators from "../../MathStructures/Operators"
 import QueryUtils from "../../Utils/Utils"
 import ResultStep from "../MathOutput/StepByStep/ResultStep"
 import Algebra from "../../MathOperations/Algebra"
+import DeleteParentesisShellFilter from "./InputFilters/DeleteParentesisShellFilter"
 
 class MathSubQuery {
 
@@ -65,17 +66,11 @@ class MathSubQuery {
 
     private generateTreeNode():void {
 
+        this.subQuery = new DeleteParentesisShellFilter(this.subQuery).getCleanQuery()
+
         var queryArray = this.subQuery.split('')
         let openParentesis = queryArray.indexOf('(')
         let closeParentesis = QueryUtils.getIndexOfCloseParentesis(queryArray, openParentesis)
-
-        if(queryArray.indexOf('(') == 0 && closeParentesis == (queryArray.length-1)){
-            queryArray.splice(closeParentesis, 1)
-            queryArray.splice(openParentesis, 1)
-        }
-
-        // Save changes
-        this.subQuery = queryArray.join('')
 
         var operatorIdx = this.getOperator()
 

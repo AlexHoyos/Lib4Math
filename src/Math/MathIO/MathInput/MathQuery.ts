@@ -4,6 +4,10 @@ import Operators from "../../MathStructures/Operators"
 import QueryUtils from "../../Utils/Utils"
 import MathResult from "../MathOutput/MathResult"
 import ResultStep from "../MathOutput/StepByStep/ResultStep"
+import DeleteCloseUnopenedParentesisFilter from "./InputFilters/DeleteCloseUnopenedParentesisFilter"
+import DeleteOpenUnclosedParentesisFilter from "./InputFilters/DeleteOpenUnclosedParentesisFilter"
+import DeleteRepeatedOperators from "./InputFilters/DeleteRepeatedOperators"
+import DeleteSpacesFilter from "./InputFilters/DeleteSpacesFilter"
 import MathSubQuery from "./MathSubQuery"
 
 class MathQuery {
@@ -43,62 +47,17 @@ class MathQuery {
 
     private cleanRawQuery():void {
 
-        //Removed blank spaces
-        this.rawQuery.replaceAll(' ', '')
+        // Removed blank spaces
+        this.rawQuery = new DeleteSpacesFilter(this.rawQuery).getCleanQuery()
 
-        var rawQueryArray = this.rawQuery.split('')
+        // Remove Open/Unclosed Parentesis
+        this.rawQuery = new DeleteOpenUnclosedParentesisFilter(this.rawQuery).getCleanQuery()
 
-        // Revisamos si hay parentesis abiertos sin cerrar
-        var parentesis = rawQueryArray.indexOf('(')
-        while(parentesis != -1){
-            let closeParentesis = QueryUtils.getIndexOfCloseParentesis(rawQueryArray, parentesis)
-            // Si no tiene cierre, eliminamos el parentesis
-            if(closeParentesis == -1){
-                rawQueryArray.splice(parentesis, 1)
-                parentesis = rawQueryArray.indexOf('(')
-            } else {
-                let subIndex = rawQueryArray.slice(parentesis+1).indexOf('(') // buscamos una apertura en lo que queda de arreglo
-                if(subIndex != -1) // si existe obtenemos el indice
-                    parentesis += subIndex+1
-                else
-                    parentesis = -1
-            }
-                
+        // Remove Close/Unopened Parentesis
+        this.rawQuery = new DeleteCloseUnopenedParentesisFilter(this.rawQuery).getCleanQuery()
 
-            
-        }
-
-        // Revisamos si hay parentesis de cierre sin abrir
-        var parentesis = rawQueryArray.indexOf(')')
-        while(parentesis != -1){
-            let openParentesis = QueryUtils.getIndexOfOpenParentesis(rawQueryArray, parentesis)
-            // Si no tiene cierre, eliminamos el parentesis
-            // Si si tiene, revisamos si existe otro indice
-            if(openParentesis == -1){
-                rawQueryArray.splice(parentesis, 1)
-                parentesis = rawQueryArray.indexOf(')')
-            } else {
-                let subIndex = rawQueryArray.slice(parentesis+1).indexOf(')') // buscamos un cierre en lo que queda de arreglo
-                if(subIndex != -1) // si existe obtenemos el indice
-                    parentesis += subIndex+1
-                else
-                    parentesis = -1
-            }
-                
-            
-        }
-
-        // Guardamos cambios
-        this.rawQuery = rawQueryArray.join('')
-        // Limpiamos operadores repetidos
-        Object.values(Operators).forEach(operator => {
-
-            let dobleOperator = operator+operator
-
-            while(this.rawQuery.includes(dobleOperator))
-                this.rawQuery = this.rawQuery.replaceAll(dobleOperator, operator)
-
-        })
+        // Remove repeated operators
+        this.rawQuery = new DeleteRepeatedOperators(this.rawQuery).getCleanQuery()
 
     }
 
