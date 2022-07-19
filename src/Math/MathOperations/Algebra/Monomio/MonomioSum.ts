@@ -21,7 +21,7 @@ class MonomioSum implements IOperation {
         var suma = new Monomio(this.struct1.coeficiente, this.struct1.literal.clone())
 
         if(suma.compareLiteral(this.struct2.literal)){
-            suma.addCoeficiente(this.struct2.coeficiente)
+            suma.addCoeficiente(this.struct2.coeficiente.getNumberValue())
             return suma
 
         } else {

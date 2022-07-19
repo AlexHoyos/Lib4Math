@@ -1,5 +1,6 @@
 import ResultStep from "../../../MathIO/MathOutput/StepByStep/ResultStep";
 import MathStructure from "../../../MathStructures/MathStructure";
+import NumberCoefficient from "../../../MathStructures/PrimitiveStructures/Coefficient/NumberCoefficient";
 import Monomio from "../../../MathStructures/PrimitiveStructures/Monomio";
 import IOperation from "../../IOperation";
 
@@ -17,12 +18,12 @@ class MonomioMultp implements IOperation {
 
     resolve() {
 
-        let result = new Monomio(0)
+        let result = new Monomio()
 
-        let newCoeficiente = this.struct1.coeficiente*this.struct2.coeficiente
+        let newCoeficiente = this.struct1.coeficiente.getNumberValue()*this.struct2.coeficiente.getNumberValue()
         result.addLiteral( this.struct1.literal.clone() , true)
         result.addLiteral( this.struct2.literal.clone() , true)
-        result.coeficiente = newCoeficiente
+        result.coeficiente = new NumberCoefficient(newCoeficiente)
         result.simplify()
         return result
 

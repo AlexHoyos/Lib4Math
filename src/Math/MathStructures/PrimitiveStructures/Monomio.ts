@@ -2,26 +2,28 @@ import QueryUtils from "../../Utils/Utils";
 import Fraction from "../ComplexStructures/Fraction";
 import Polinomio from "../ComplexStructures/Polinomio";
 import MathStructure from "../MathStructure";
+import ACoefficient from "./Coefficient/ACoefficient";
+import NumberCoefficient from "./Coefficient/NumberCoefficient";
 import Literal from "./Literal/Literal";
 import Variable from "./Literal/Variable";
 
 class Monomio extends MathStructure{
 
-    coeficiente: number
+    coeficiente: ACoefficient
     literal: Literal
 
-    constructor(coeficiente = 1, literal = new Literal()){
+    constructor(coeficiente:ACoefficient = new NumberCoefficient(0), literal = new Literal()){
         super();
-        this.coeficiente = parseFloat(coeficiente.toFixed(5))
+        this.coeficiente = coeficiente
         this.literal = literal
 
     }
 
     print():string {
 
-        if(this.coeficiente == 0)
+        if(this.coeficiente.getNumberValue() == 0)
             return ""
-        return this.coeficiente+this.literal.print()
+        return this.coeficiente.print()+this.literal.print()
 
     }
 
@@ -49,11 +51,19 @@ class Monomio extends MathStructure{
     }
 
     toggleSign(){
-        this.coeficiente *= -1
+        this.coeficiente.toggleSign()
     }
 
     addCoeficiente(coeficiente:number){
-        this.coeficiente+=coeficiente
+
+        // Convert in NumberCoefficient if not
+        if( !(this.coeficiente instanceof NumberCoefficient) ){
+            this.coeficiente = new NumberCoefficient(this.coeficiente.getNumberValue())
+            this.addCoeficiente(coeficiente)
+        } else {
+            this.coeficiente.addValue(coeficiente)
+        }
+
     }
 
     addVariable(variable:Variable, fusion = false){
@@ -82,14 +92,13 @@ class Monomio extends MathStructure{
     }
 
     toFraction(): Fraction {
-        return new Fraction(new Polinomio([this]), new Polinomio([new Monomio(1)]))
+        return new Fraction(new Polinomio([this]), new Polinomio([new Monomio( new NumberCoefficient(1) )]))
     }
 
     hasVariables(): boolean {
         if(this.literal.variables.length > 0){
 
-            console.log("coeficiente = "+this.coeficiente)
-            if(this.coeficiente != 0){
+            if(this.coeficiente.isZero() == false){
                 return true
             } else {
                 return false
@@ -101,7 +110,7 @@ class Monomio extends MathStructure{
     }
 
     isZero():boolean {
-        return (this.coeficiente == 0)
+        return this.coeficiente.isZero()
     }
 
     static RawValueToMonomio(value:any): Monomio{
@@ -148,7 +157,7 @@ class Monomio extends MathStructure{
     
         }
     
-        return new Monomio(parseFloat(coeficiente), literales)
+        return new Monomio(new NumberCoefficient(parseFloat(coeficiente)), literales)
     
     }
 

@@ -6,6 +6,7 @@ import Literal from "../PrimitiveStructures/Literal/Literal";
 import Variable from "../PrimitiveStructures/Literal/Variable";
 import Concat from "./Concat";
 import MonomioOperations from "../../MathOperations/Algebra/MonomioOperations";
+import NumberCoefficient from "../PrimitiveStructures/Coefficient/NumberCoefficient";
 
 class Polinomio extends MathStructure{
     monomios: Monomio[]
@@ -26,9 +27,9 @@ class Polinomio extends MathStructure{
 
         this.monomios.forEach(monomio => {
 
-            if(monomio.coeficiente < 0 || round == 1){
+            if(monomio.coeficiente.getNumberValue() < 0 || round == 1){
                 text += monomio.print()
-            } else if(monomio.coeficiente > 0){
+            } else if(monomio.coeficiente.getNumberValue() > 0){
                 text += '+'+monomio.print()
             }
 
@@ -114,7 +115,7 @@ class Polinomio extends MathStructure{
                 var sum = MonomioOperations.sum(mono1, mono2)
                 if(sum instanceof Monomio){
 
-                    if(sum.coeficiente != 0){
+                    if(sum.coeficiente.isZero() == false){
                         this.monomios[i] = sum
                         this.monomios.splice(j, 1)
                     } else {
@@ -196,7 +197,7 @@ class Polinomio extends MathStructure{
     }
 
     toFraction(): Fraction {
-        return new Fraction(this, new Polinomio([ new Monomio(1) ]))
+        return new Fraction(this, new Polinomio([ new Monomio( new NumberCoefficient(1) ) ]))
     }
 
     toggleMonoSigns(){

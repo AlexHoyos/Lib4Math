@@ -18,7 +18,7 @@ class PolinomioPow implements IOperation {
 
     resolve(): Polinomio {
 
-        var Exp = this.struct2.monomios[0].coeficiente
+        var Exp = this.struct2.monomios[0].coeficiente.getNumberValue()
 
         var result = new Polinomio([ new Monomio() ])
 

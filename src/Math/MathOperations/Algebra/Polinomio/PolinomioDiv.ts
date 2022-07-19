@@ -31,7 +31,7 @@ class PolinomioDiv implements IOperation {
         }
 
         if(this.struct1.monomios.length == 0 || this.struct2.monomios.length == 0){
-            return new Polinomio([new Monomio(0)])
+            return new Polinomio([new Monomio()])
         }
 
         var struct1Clone:Polinomio = this.struct1.clone()

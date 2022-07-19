@@ -2,6 +2,7 @@ import ResultStep from "../../../MathIO/MathOutput/StepByStep/ResultStep";
 import Fraction from "../../../MathStructures/ComplexStructures/Fraction";
 import Polinomio from "../../../MathStructures/ComplexStructures/Polinomio";
 import MathStructure from "../../../MathStructures/MathStructure";
+import NumberCoefficient from "../../../MathStructures/PrimitiveStructures/Coefficient/NumberCoefficient";
 import Literal from "../../../MathStructures/PrimitiveStructures/Literal/Literal";
 import Variable from "../../../MathStructures/PrimitiveStructures/Literal/Variable";
 import Monomio from "../../../MathStructures/PrimitiveStructures/Monomio";
@@ -30,12 +31,12 @@ class MonomioDiv implements IOperation {
             return new Fraction(new Polinomio([this.struct1]), new Polinomio([this.struct2]))
         
         if(this.struct1.compare(this.struct2) == true)
-            return new Monomio(1, new Literal())
+            return new Monomio(new NumberCoefficient(1), new Literal())
 
         if(this.struct1.compareLiteral(this.struct2.literal)){
-            var newCoeficiente = this.struct1.coeficiente/this.struct2.coeficiente
+            var newCoeficiente = this.struct1.coeficiente.getNumberValue()/this.struct2.coeficiente.getNumberValue()
             if(newCoeficiente%1 == 0 || this.decimals == true){
-                return new Monomio(newCoeficiente)
+                return new Monomio(new NumberCoefficient(newCoeficiente))
             } else {
                 let struct1Clone = this.struct1.clone()
                 struct1Clone.wipeLiteral()
@@ -57,13 +58,13 @@ class MonomioDiv implements IOperation {
         struct2Clone.addLiteral(struct2Literal)
         struct1Clone.addLiteral(struct2Literal, true) // removing negative exp variables
         
-        var newCoeficiente = struct1Clone.coeficiente/struct2Clone.coeficiente
+        var newCoeficiente = struct1Clone.coeficiente.getNumberValue()/struct2Clone.coeficiente.getNumberValue()
         if(newCoeficiente%1 == 0 || this.decimals == true ){
-            struct2Clone.coeficiente = 1
-            struct1Clone.coeficiente = newCoeficiente
+            struct2Clone.coeficiente = new NumberCoefficient(1)
+            struct1Clone.coeficiente = new NumberCoefficient(newCoeficiente)
         }
 
-        if(struct2Clone.hasVariables() == false && struct2Clone.coeficiente == 1){
+        if(struct2Clone.hasVariables() == false && struct2Clone.coeficiente.getNumberValue() == 1){
             return struct1Clone
         }
 
