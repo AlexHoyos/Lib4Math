@@ -1,7 +1,7 @@
 import Operators from "../../../MathStructures/Operators";
 import AFilter from "./AFilter";
 
-class DeleteRepeatedOperators extends AFilter {
+class DeleteRepeatedOperatorsFilter extends AFilter {
 
     cleanQuery(): void {
 
@@ -21,4 +21,4 @@ class DeleteRepeatedOperators extends AFilter {
 
 }
 
-export default DeleteRepeatedOperators
+export default DeleteRepeatedOperatorsFilter

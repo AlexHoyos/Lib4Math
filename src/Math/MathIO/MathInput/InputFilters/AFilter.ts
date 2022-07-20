@@ -1,16 +1,23 @@
 abstract class AFilter {
 
-    query:string
+    query:string = ""
     protected _cleanQuery:string = ""
 
-    constructor(query:string){
+    constructor(query:string = ""){
+        this.query = query
+
+        if(query != "")
+            this.cleanQuery()
+
+    }
+
+    setQuery(query:string){
         this.query = query
         this.cleanQuery()
     }
 
     abstract cleanQuery():void
     getCleanQuery():string {
-        console.log(this._cleanQuery)
         return this._cleanQuery
     }
 

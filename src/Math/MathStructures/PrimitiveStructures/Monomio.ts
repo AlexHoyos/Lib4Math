@@ -1,4 +1,3 @@
-import QueryUtils from "../../Utils/Utils";
 import Fraction from "../ComplexStructures/Fraction";
 import Polinomio from "../ComplexStructures/Polinomio";
 import MathStructure from "../MathStructure";
@@ -111,54 +110,6 @@ class Monomio extends MathStructure{
 
     isZero():boolean {
         return this.coeficiente.isZero()
-    }
-
-    static RawValueToMonomio(value:any): Monomio{
-        
-        value = value.split('')
-        var coeficiente:any = ''
-        var literales:Literal = new Literal()
-    
-        while(QueryUtils.isNumeric(value[0]) || value[0] == '.'){
-            
-            coeficiente += value[0]
-            value = value.slice(1, value.length)
-        }
-    
-        if(coeficiente == ''){
-            coeficiente = 1
-        }
-    
-        while(QueryUtils.isNumeric(value[0]) == false && QueryUtils.isOperator(value[0]) == false && value.length > 0){
-            let exp = undefined
-            let literal:Variable = new Variable(value[0], 0)
-            value = value.slice(1, value.length)
-            
-            if(value[0] == '^'){
-                value = value.slice(1, value.length)
-                while(QueryUtils.isNumeric(value[0])){
-                    if(exp == undefined)
-                        exp = ''
-                    
-                    exp += value[0]
-                    value = value.slice(1, value.length)
-    
-                }
-            }
-    
-            if(exp == undefined){
-                exp = 1
-            } else {
-                exp = parseInt(exp)
-            }
-    
-            literal.addExp(exp)
-            literales.addVariable(literal)
-    
-        }
-    
-        return new Monomio(new NumberCoefficient(parseFloat(coeficiente)), literales)
-    
     }
 
 }

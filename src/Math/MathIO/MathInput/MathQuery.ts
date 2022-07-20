@@ -1,13 +1,12 @@
 import BinaryTree from "../../../BinaryTree/BinaryTree"
 import TreeNode from "../../../BinaryTree/TreeNode"
-import Operators from "../../MathStructures/Operators"
-import QueryUtils from "../../Utils/Utils"
 import MathResult from "../MathOutput/MathResult"
 import ResultStep from "../MathOutput/StepByStep/ResultStep"
 import DeleteCloseUnopenedParentesisFilter from "./InputFilters/DeleteCloseUnopenedParentesisFilter"
 import DeleteOpenUnclosedParentesisFilter from "./InputFilters/DeleteOpenUnclosedParentesisFilter"
-import DeleteRepeatedOperators from "./InputFilters/DeleteRepeatedOperators"
+import DeleteRepeatedOperatorsFilter from "./InputFilters/DeleteRepeatedOperatorsFilter"
 import DeleteSpacesFilter from "./InputFilters/DeleteSpacesFilter"
+import { FilterManager } from "./InputFilters/FiltersManager"
 import MathSubQuery from "./MathSubQuery"
 
 class MathQuery {
@@ -47,17 +46,12 @@ class MathQuery {
 
     private cleanRawQuery():void {
 
-        // Removed blank spaces
-        this.rawQuery = new DeleteSpacesFilter(this.rawQuery).getCleanQuery()
-
-        // Remove Open/Unclosed Parentesis
-        this.rawQuery = new DeleteOpenUnclosedParentesisFilter(this.rawQuery).getCleanQuery()
-
-        // Remove Close/Unopened Parentesis
-        this.rawQuery = new DeleteCloseUnopenedParentesisFilter(this.rawQuery).getCleanQuery()
-
-        // Remove repeated operators
-        this.rawQuery = new DeleteRepeatedOperators(this.rawQuery).getCleanQuery()
+        this.rawQuery = FilterManager.setFilters(this.rawQuery, [
+            new DeleteSpacesFilter(), // Removed blank spaces
+            new DeleteOpenUnclosedParentesisFilter(), // Remove Open/Unclosed Parentesis
+            new DeleteCloseUnopenedParentesisFilter(), // Remove Close/Unopened Parentesis
+            new DeleteRepeatedOperatorsFilter() // Remove repeated operators
+        ])
 
     }
 

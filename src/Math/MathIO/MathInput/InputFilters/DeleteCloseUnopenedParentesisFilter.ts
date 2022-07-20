@@ -1,4 +1,4 @@
-import QueryUtils from "../../../Utils/Utils";
+import QueryUtils from "../../../Utils/QueryUtils";
 import AFilter from "./AFilter";
 
 class DeleteCloseUnopenedParentesisFilter extends AFilter {

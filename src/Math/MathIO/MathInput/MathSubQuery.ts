@@ -1,12 +1,14 @@
 import TreeNode from "../../../BinaryTree/TreeNode"
 import Polinomio from "../../MathStructures/ComplexStructures/Polinomio"
 import MathStructure from "../../MathStructures/MathStructure"
-import Monomio from "../../MathStructures/PrimitiveStructures/Monomio"
 import Operators from "../../MathStructures/Operators"
-import QueryUtils from "../../Utils/Utils"
+import QueryUtils from "../../Utils/QueryUtils"
 import ResultStep from "../MathOutput/StepByStep/ResultStep"
 import Algebra from "../../MathOperations/Algebra"
 import DeleteParentesisShellFilter from "./InputFilters/DeleteParentesisShellFilter"
+import MonomioConstructor from "./InputConstructor/MonomioConstructor"
+import { FilterManager } from "./InputFilters/FiltersManager"
+import DeleteRepeatedPointFilter from "./InputFilters/DeleteRepeatedPointFilter"
 
 class MathSubQuery {
 
@@ -66,14 +68,13 @@ class MathSubQuery {
 
     private generateTreeNode():void {
 
-        this.subQuery = new DeleteParentesisShellFilter(this.subQuery).getCleanQuery()
+        this.subQuery = FilterManager.setFilters(this.subQuery, [
+            new DeleteParentesisShellFilter(),
+            new DeleteRepeatedPointFilter()
+        ])
 
         var queryArray = this.subQuery.split('')
-        let openParentesis = queryArray.indexOf('(')
-        let closeParentesis = QueryUtils.getIndexOfCloseParentesis(queryArray, openParentesis)
-
-        var operatorIdx = this.getOperator()
-
+        var operatorIdx:number = QueryUtils.getOperator(this.subQuery)
         if(operatorIdx != -1){
 
             let operator:any = queryArray[operatorIdx]
@@ -83,55 +84,15 @@ class MathSubQuery {
 
         } else {
 
-            let monomio = Monomio.RawValueToMonomio(this.subQuery)
+            let monomio = new MonomioConstructor(this.subQuery).product
             let polinomio = new Polinomio()
-            polinomio.addMonomio(monomio)
+            if(monomio != undefined)
+                polinomio.addMonomio(monomio)
             this.queryNode = new TreeNode(polinomio)
 
         }
 
         
-
-    }
-
-    private getOperator():number{
-
-        var queryArray = this.subQuery.split('')
-
-        var operadorIdx = queryArray.lastIndexOf('+')
-        while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
-                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('+')
-        }
-
-        if(operadorIdx == -1){
-            operadorIdx = queryArray.lastIndexOf('-')
-            while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
-                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('-')
-            }
-        }
-
-        if(operadorIdx == -1){
-            operadorIdx = queryArray.lastIndexOf('/')
-            while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
-                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('/')
-            }
-        }
-
-        if(operadorIdx == -1){
-            operadorIdx = queryArray.lastIndexOf('*')
-            while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
-                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('*')
-            }
-        }
-
-        if(operadorIdx == -1){
-            operadorIdx = queryArray.lastIndexOf('^')
-            while(operadorIdx != -1 && (QueryUtils.isInsideParentesis(queryArray, operadorIdx) || QueryUtils.isNextToChar(queryArray, operadorIdx) )){
-                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('^')
-            }
-        }
-
-        return operadorIdx
 
     }
 

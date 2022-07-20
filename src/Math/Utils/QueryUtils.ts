@@ -1,6 +1,46 @@
 import Operators from "../MathStructures/Operators";
 
 const QueryUtils = {
+    getOperator: function(query:string):number{
+
+        var queryArray = query.split('')
+        console.log("queryarray: ", queryArray)
+        var operadorIdx = queryArray.lastIndexOf('+')
+        while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
+                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('+')
+        }
+
+        if(operadorIdx == -1){
+            operadorIdx = queryArray.lastIndexOf('-')
+            while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
+                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('-')
+            }
+        }
+
+        if(operadorIdx == -1){
+            operadorIdx = queryArray.lastIndexOf('/')
+            while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
+                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('/')
+            }
+        }
+
+        if(operadorIdx == -1){
+            operadorIdx = queryArray.lastIndexOf('*')
+            while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
+                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('*')
+            }
+        }
+
+        if(operadorIdx == -1){
+            operadorIdx = queryArray.lastIndexOf('^')
+            while(operadorIdx != -1 && (QueryUtils.isInsideParentesis(queryArray, operadorIdx) || QueryUtils.isNextToChar(queryArray, operadorIdx) )){
+                operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('^')
+            }
+        }
+
+        return operadorIdx
+
+    },
 
     getIndexOfCloseParentesis: function(queryArray:string[], index:number):number{
 
