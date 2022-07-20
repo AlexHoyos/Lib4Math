@@ -63,7 +63,7 @@ class MonomioConstructor extends AConstructor{
         }
     
         this.product = new Monomio(coeficiente, literal)
-        console.log(this.product)
+
     }
 
 }

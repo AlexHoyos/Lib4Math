@@ -3,7 +3,7 @@ class BinaryTree {
 
     head:TreeNode | null
 
-    constructor(head=null){
+    constructor(head:TreeNode | null=null){
         this.head = head
     }
 

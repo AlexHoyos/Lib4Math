@@ -5,7 +5,6 @@ const QueryUtils = {
     getOperator: function(query:string):number{
 
         var queryArray = query.split('')
-        console.log("queryarray: ", queryArray)
         var operadorIdx = queryArray.lastIndexOf('+')
         while(operadorIdx != -1 && QueryUtils.isInsideParentesis(queryArray, operadorIdx)){
                 operadorIdx = queryArray.slice(0, operadorIdx).lastIndexOf('+')

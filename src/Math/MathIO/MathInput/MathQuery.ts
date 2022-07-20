@@ -30,7 +30,7 @@ class MathQuery {
         var stepByStep:ResultStep[] = []
 
         if(this.getQueryTree().getHead() instanceof TreeNode && this.mathSubQueryHead instanceof MathSubQuery){
-            let resultado = this.mathSubQueryHead.resolveAlgebra(this.getQueryTree().getHead(),stepbystep = stepByStep)
+            let resultado = this.mathSubQueryHead.resolveAlgebra(this.getQueryTree().getHead(), stepByStep)
             return new MathResult(this.rawQuery, resultado, stepByStep)
         }
 

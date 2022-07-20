@@ -13,7 +13,6 @@ class MixedCoefficient extends ACoefficient {
         this._coefficients = coefficients
 
         var num: number = this._coefficients[0].getNumberValue()
-        console.log(this._coefficients)
         this._coefficients.slice(1, this._coefficients.length).forEach(coefficient => num*=coefficient.getNumberValue())
 
         this._numericalValue = num

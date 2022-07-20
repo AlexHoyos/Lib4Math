@@ -11,7 +11,7 @@ class ConstantExtractor extends AExtractor {
         Object.keys(ConstantList).forEach(constantName => {
 
             while(this.input.includes(constantName)){
-                console.log(this.input)
+
                 constantsNames.push(constantName)
                 this.input = this.input.replace(constantName, '')
 

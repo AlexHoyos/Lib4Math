@@ -9,6 +9,7 @@ import DeleteParentesisShellFilter from "./InputFilters/DeleteParentesisShellFil
 import MonomioConstructor from "./InputConstructor/MonomioConstructor"
 import { FilterManager } from "./InputFilters/FilterManager"
 import DeleteRepeatedPointFilter from "./InputFilters/DeleteRepeatedPointFilter"
+import TreeNodeConstructor from "./InputConstructor/TreeNodeConstructor"
 
 class MathSubQuery {
 
@@ -66,33 +67,10 @@ class MathSubQuery {
 
     }
 
+    
     private generateTreeNode():void {
 
-        this.subQuery = FilterManager.setFilters(this.subQuery, [
-            new DeleteParentesisShellFilter(),
-            new DeleteRepeatedPointFilter()
-        ])
-
-        var queryArray = this.subQuery.split('')
-        var operatorIdx:number = QueryUtils.getOperator(this.subQuery)
-        if(operatorIdx != -1){
-
-            let operator:any = queryArray[operatorIdx]
-            let right = new MathSubQuery(queryArray.slice(operatorIdx+1).join('')).getQueryNode()
-            let left = new MathSubQuery(queryArray.slice(0, operatorIdx).join('')).getQueryNode()
-            this.queryNode = new TreeNode( operator as Operators, left, right )
-
-        } else {
-
-            let monomio = new MonomioConstructor(this.subQuery).product
-            let polinomio = new Polinomio()
-            if(monomio != undefined)
-                polinomio.addMonomio(monomio)
-            this.queryNode = new TreeNode(polinomio)
-
-        }
-
-        
+        this.queryNode = <TreeNode> new TreeNodeConstructor(this.subQuery).product
 
     }
 
