@@ -1,40 +1,54 @@
+import ACoefficient from "../../../MathStructures/PrimitiveStructures/Coefficient/ACoefficient";
 import NumberCoefficient from "../../../MathStructures/PrimitiveStructures/Coefficient/NumberCoefficient";
 import Literal from "../../../MathStructures/PrimitiveStructures/Literal/Literal";
 import Variable from "../../../MathStructures/PrimitiveStructures/Literal/Variable";
 import Monomio from "../../../MathStructures/PrimitiveStructures/Monomio";
 import QueryUtils from "../../../Utils/QueryUtils";
 import AConstructor from "./AConstructor";
+import CoefficientConstructor from "./CoefficientConstructor";
 
 class MonomioConstructor extends AConstructor{
 
     product?: Monomio;
+    remainder: string = ""
 
     construct(): void {
-        var value:any = this.input.split('')
-        var coeficiente:any = ''
-        var literales:Literal = new Literal()
-    
-        while(QueryUtils.isNumeric(value[0]) || value[0] == '.'){
-            
-            coeficiente += value[0]
-            value = value.slice(1, value.length)
-        }
 
-        while(QueryUtils.isNumeric(value[0]) == false && QueryUtils.isOperator(value[0]) == false && value.length > 0){
+        var inputArray:any = this.input.split('')
+        var coeficiente:ACoefficient|undefined
+        var literal:Literal = new Literal()
+
+        let coefficientConstruct = new CoefficientConstructor(this.input)
+        coeficiente = coefficientConstruct.product
+
+        inputArray = coefficientConstruct.remainder.split('')
+
+        if( (coeficiente instanceof ACoefficient) == false)
+            coeficiente = new NumberCoefficient(1)
+
+        // Check if there are variables
+        while(
+            QueryUtils.isNumeric(inputArray[0]) == false && // Is not a number and...
+            QueryUtils.isOperator(inputArray[0]) == false && // Is not an operator and ...
+            inputArray.length > 0 // There's at least one item in the input to be checked as a variable
+        ){
             let exp = undefined
-            let literal:Variable = new Variable(value[0], 0)
-            value = value.slice(1, value.length)
+            let variable:Variable = new Variable(inputArray[0], 0)
+            inputArray = inputArray.slice(1, inputArray.length)
             
-            if(value[0] == '^'){
-                value = value.slice(1, value.length)
-                while(QueryUtils.isNumeric(value[0])){
+            // if next element is a pow operator, set the exponential
+            if(inputArray[0] == '^'){
+                inputArray = inputArray.slice(1, inputArray.length)
+
+                while(QueryUtils.isNumeric(inputArray[0])){
                     if(exp == undefined)
                         exp = ''
                     
-                    exp += value[0]
-                    value = value.slice(1, value.length)
+                    exp += inputArray[0]
+                    inputArray = inputArray.slice(1, inputArray.length)
     
                 }
+
             }
     
             if(exp == undefined){
@@ -43,19 +57,12 @@ class MonomioConstructor extends AConstructor{
                 exp = parseInt(exp)
             }
     
-            literal.addExp(exp)
-            literales.addVariable(literal)
+            variable.addExp(exp)
+            literal.addVariable(variable)
     
         }
-
-        if(coeficiente == '' && literales.variables.length > 0)
-            coeficiente = 1
-        
-
-        if(coeficiente == '' && literales.variables.length == 0)
-            coeficiente = 0
     
-        this.product = new Monomio(new NumberCoefficient(parseFloat(coeficiente)), literales)
+        this.product = new Monomio(coeficiente, literal)
         console.log(this.product)
     }
 

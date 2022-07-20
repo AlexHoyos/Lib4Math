@@ -9,6 +9,7 @@ class ConstantCoefficient extends ACoefficient {
     constructor(constant:AConstant){
         super(constant.getValue())
         this._constant = constant
+        this._numericalValue = constant.getValue()
     }
 
     print(): string {

@@ -1,4 +1,4 @@
-import AFilter from "./AFilter";
+import AFilter from "./AFilter"
 
 class DeleteRepeatedPointFilter extends AFilter {
 

@@ -7,7 +7,7 @@ import ResultStep from "../MathOutput/StepByStep/ResultStep"
 import Algebra from "../../MathOperations/Algebra"
 import DeleteParentesisShellFilter from "./InputFilters/DeleteParentesisShellFilter"
 import MonomioConstructor from "./InputConstructor/MonomioConstructor"
-import { FilterManager } from "./InputFilters/FiltersManager"
+import { FilterManager } from "./InputFilters/FilterManager"
 import DeleteRepeatedPointFilter from "./InputFilters/DeleteRepeatedPointFilter"
 
 class MathSubQuery {

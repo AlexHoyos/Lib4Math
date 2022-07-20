@@ -6,7 +6,7 @@ import DeleteCloseUnopenedParentesisFilter from "./InputFilters/DeleteCloseUnope
 import DeleteOpenUnclosedParentesisFilter from "./InputFilters/DeleteOpenUnclosedParentesisFilter"
 import DeleteRepeatedOperatorsFilter from "./InputFilters/DeleteRepeatedOperatorsFilter"
 import DeleteSpacesFilter from "./InputFilters/DeleteSpacesFilter"
-import { FilterManager } from "./InputFilters/FiltersManager"
+import { FilterManager } from "./InputFilters/FilterManager"
 import MathSubQuery from "./MathSubQuery"
 
 class MathQuery {

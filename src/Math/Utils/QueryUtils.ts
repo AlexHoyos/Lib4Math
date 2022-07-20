@@ -1,4 +1,5 @@
 import Operators from "../MathStructures/Operators";
+import ConstantList from "../MathStructures/PrimitiveStructures/Coefficient/Constants/Constants.list";
 
 const QueryUtils = {
     getOperator: function(query:string):number{
@@ -115,6 +116,10 @@ const QueryUtils = {
 
     isOperator: function(o:Operators):boolean {
         return Object.values(Operators).includes(o)
+    },
+
+    isConstant: function(c: string):boolean {
+        return (c in ConstantList)
     },
 
     isNextToChar: function(queryArray:string[], index:number):boolean{
